@@ -42,21 +42,26 @@ include_once( wc_measurement_price_calculator()->get_plugin_path() . '/admin/pos
 function wc_measurement_price_calculator_get_wc_settings() {
 
 	$plugin_path = wc()->plugin_path();
+	
 
 	if ( SV_WC_Plugin_Compatibility::is_wc_version_gte( '3.3' ) ) {
 
-		if ( ! class_exists( 'WC_Settings_Page', false ) ) {
-			include_once( $plugin_path . '/includes/admin/settings/class-wc-settings-page.php' );
+		// if ( ! class_exists( 'WC_Settings_Page', false ) ) {
+			// include_once( $plugin_path . '/includes/admin/settings/class-wc-settings-page.php' );
+		// }
+		
+		if ( ! class_exists( 'WC_Admin_Settings', false ) ) { // Works in WC 4.x
+			$admin_settings = include_once( $plugin_path . '/includes/admin/class-wc-admin-settings.php' );
 		}
+		$settings_products = WC_Admin_Settings::get_settings_pages()[1];
 
-		if ( ! class_exists( 'WC_Settings_Products', false ) ) {
-			$settings_products = include( $plugin_path . '/includes/admin/settings/class-wc-settings-products.php' );
-		} else {
-			$settings_products = new WC_Settings_Products();
-		}
+		// if ( ! class_exists( 'WC_Settings_Products', false ) ) {
+			// $settings_products = include_once( $plugin_path . '/includes/admin/settings/class-wc-settings-products.php' );
+		// } else {
+			// $settings_products = new WC_Settings_Products();
+		// }
 
 	} else {
-
 		include_once( $plugin_path . '/includes/admin/settings/class-wc-settings-page.php' );
 
 		$settings_products = include( $plugin_path . '/includes/admin/settings/class-wc-settings-products.php' );
